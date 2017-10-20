@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane maxHeight="900.0" maxWidth="1200.0" minHeight="300.0" minWidth="400.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@fxscene.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalendarController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="6.62" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="13.32" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="6.66" prefWidth="100.0" />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="60.0" minHeight="10.0" percentHeight="10.0" prefHeight="33.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="27.0" minHeight="0.0" percentHeight="20.0" prefHeight="27.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+   </rowConstraints>
+   <children>
+      <Label fx:id="week1L" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onPrevClickedMethod" styleClass="myLabel" text="prev" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Label>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Monday" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Label>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Tuesday" GridPane.columnIndex="2" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Wednesday" GridPane.columnIndex="3" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Thursday" GridPane.columnIndex="4" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Friday" GridPane.columnIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Saturday" GridPane.columnIndex="6" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Sunday" GridPane.columnIndex="7" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" />
+      <Label fx:id="week1L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="1" />
+      <Label fx:id="week2L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="2" />
+      <Label fx:id="week3L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="3" />
+      <Label fx:id="week4L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="4" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="prev" GridPane.rowIndex="5" />
+      <Label fx:id="week1P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+      <Label fx:id="week2P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+      <Label fx:id="week3P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+      <Label fx:id="week4P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Monday" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Tuesday" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Wednesday" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Thurdsday" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Friday" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Saturday" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Sunday" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+      <VBox fx:id="vbox12" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label " />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox11" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox21" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox31" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox41" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox22" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox32" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox42" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox13" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox23" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox33" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="3" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox43" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="3" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox14" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="4" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" styleClass="dayCardLabel" text="Label" />
+            <VBox onMouseClicked="#onClickedOnDayMethod" prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox24" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="4" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox34" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="4" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox44" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="4" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox15" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="5" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox25" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="5" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox35" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="5" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox45" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="5" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox16" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="6" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox26" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="6" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox36" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="6" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox46" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="6" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox17" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="7" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox27" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="7" GridPane.rowIndex="2">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox37" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="7" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+      <VBox fx:id="vbox47" prefHeight="200.0" prefWidth="100.0" styleClass="dayCardContainer" GridPane.columnIndex="7" GridPane.rowIndex="4">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" onMouseClicked="#onClickedOnDayMethod" styleClass="dayCardLabel" text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </children>
+      </VBox>
+   </children>
+</GridPane>

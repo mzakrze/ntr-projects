@@ -1,0 +1,52 @@
+.root {
+-fx-font-size: 26px;
+}
+.button {
+-fx-background-radius: 5%;
+-fx-font-size: 20px;
+-fx-max-width:2000px;
+-fx-max-height:2000px;
+}
+.myLabel{
+	-fx-background-color:rgb(141,162,222);
+	-fx-text-fill: rgb(041,062,222);
+	-fx-background-radius: 3px;
+	-fx-fill: true;
+	-fx-fit-to-height: true;
+	-fx-content-display: center;
+	-fx-arc-height: 100%;
+	-fx-arc-width: 100%;
+	-fx-cell-size: 100%;
+	-fx-padding: 2px;
+    -fx-border-insets: 2px;
+    -fx-background-insets: 2px;
+    -fx-font-size: 70%;
+    -fx-alignment: center;
+}
+.dayCardLabel{
+    -fx-border-radius: 5%;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-font-size: 70%;
+    -fx-alignment: center;
+}
+.dayCardContainer{
+	-fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5%;
+    -fx-font-size: 60%;
+    -fx-alignment: center;
+}
+.dayCardSingleEventLabel{
+	-fx-text-fill: green;
+	-fx-border-color: green;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5%;
+    -fx-font-size: 50%;
+    -fx-alignment: center;
+    -fx-arc-width: 100%;
+    -fx-fill: true;
+}
