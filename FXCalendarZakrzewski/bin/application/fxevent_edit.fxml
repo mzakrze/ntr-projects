@@ -39,5 +39,6 @@
       <TextArea fx:id="eventDescription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.rowSpan="2" />
       <TextField fx:id="startTimeMinutes" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <TextField fx:id="endTimeMinutes" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onMouseClicked="#onDeleteButtonClicked" text="Delete" GridPane.rowIndex="6" />
    </children>
 </GridPane>

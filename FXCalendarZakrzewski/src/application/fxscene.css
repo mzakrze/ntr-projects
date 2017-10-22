@@ -46,7 +46,7 @@
     -fx-border-width: 1px;
     -fx-border-radius: 5%;
     -fx-font-size: 50%;
-    -fx-alignment: center;
     -fx-arc-width: 100%;
     -fx-fill: true;
+    -fx-pref-width: 1000px;
 }

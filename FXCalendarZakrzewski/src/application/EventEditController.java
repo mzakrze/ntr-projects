@@ -26,12 +26,29 @@ public class EventEditController {
 	@FXML TextField endTimeMinutes;
 	@FXML TextField eventName;
 	@FXML TextArea eventDescription;
-
-	private static EventManager eventManager = EventManager.getInstance();
+	public static final String datePickerId = "datePicker";
+	public static final String startTimeHoursId = "startTimeHours";
+	public static final String startTimeMinutesId = "startTimeMinutes";
+	public static final String endTimeHoursId = "endTimeHours";
+	public static final String endTimeMinutesId = "endTimeMinutes";
+	public static final String eventNameId = "eventName";
+	public static final String eventDescriptionId = "eventDescription";
 	public final static String EVENT_ID = "EVENT_ID";
 
+	private Integer currentryEditedEventId;
+
+	public void setCurrentlyEditedEventId(Integer eventId){
+		this.currentryEditedEventId = eventId;
+	}
+
+	private static EventManager eventManager = EventManager.getInstance();
+
+
+	public EventEditController(){
+		ComponentsManager.getInstance().registerComponentAsEventEditController(this);
+	}
+
 	public void onSubmitButtonClicked(MouseEvent event){
-		Integer id = (Integer) ((Node) event.getSource()).getParent().getProperties().get(EVENT_ID);
 		LocalDate date = datePicker.getValue();
 		String startTimeHoursStr = startTimeHours.getText();
 		String startTimeMinutesStr = startTimeMinutes.getText();
@@ -48,16 +65,16 @@ public class EventEditController {
 		} catch(Throwable t){
 			isValid = false;
 		}
-		if(beginTime.isAfter(endTime)){
+		if(beginTime == null || beginTime.isAfter(endTime)){
 			isValid = false;
 		}
 		if(name == null || name.isEmpty()){
 			isValid = false;
 		}
 		if(isValid){
-			Event usersEvent = new Event(id, date, name, description, beginTime, endTime);
-			eventManager.upsert(usersEvent); // TODO coś nie działa, bo przy przewijaniu exception
-			// TODO odwierzyc widok
+			Event usersEvent = new Event(currentryEditedEventId, date, name, description, beginTime, endTime);
+			eventManager.upsert(usersEvent);
+			ComponentsManager.getInstance().getCalendarController().requestReload();
 			((Stage)((Node) event.getSource()).getParent().getScene().getWindow()).close();
 		} else {
 			System.out.println("validation failed");
@@ -79,6 +96,12 @@ public class EventEditController {
 
 	public void onCancelButtonClicked(MouseEvent event){
 		System.out.println("cancel");
+		((Stage)((Node) event.getSource()).getParent().getScene().getWindow()).close();
+	}
+
+	public void onDeleteButtonClicked(MouseEvent event){
+		eventManager.deleteById(currentryEditedEventId);
+		ComponentsManager.getInstance().getCalendarController().requestReload();
 		((Stage)((Node) event.getSource()).getParent().getScene().getWindow()).close();
 	}
 

@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -87,7 +88,7 @@ public class CalendarController {
 	private static final String EVENT_ID = "EVENT_ID";
 
 	public CalendarController(){
-
+		ComponentsManager.getInstance().registerComponentAsCalendarController(this);
 	}
 
 	@FXML
@@ -138,7 +139,7 @@ public class CalendarController {
 			e.printStackTrace();
 		}
 
-		return null;
+		throw new IllegalStateException();
 	}
 
 	private List<Label> setEventListForCalendarCardDay(List<Event> eventsForDay, VBox calendarCardDay) {
@@ -150,6 +151,8 @@ public class CalendarController {
 			eventDisplay.setText(getTextForEvent(event));
 			eventDisplay.getStyleClass().clear();
 			eventDisplay.getStyleClass().add("dayCardSingleEventLabel");
+			eventDisplay.getProperties().put(EVENT_ID, event.getId());
+			eventDisplay.setOnMouseClicked(e -> onClickedOnEventMethod(e));
 			eventsContainer.getChildren().add(eventDisplay);
 			labels.add(eventDisplay);
 		}
@@ -160,8 +163,7 @@ public class CalendarController {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");
 		String beginTime = dtf.format(event.getBeginTime());
 		String endTime = dtf.format(event.getEndTime());
-		String trimmedName = event.getName().substring(0, 5);
-		return beginTime + "-" + endTime + " " + trimmedName;
+		return beginTime + "-" + endTime + " " + event.getName();
 	}
 
 	private Label setTitleForCalendarCardDay(LocalDate date, String calendarCardDayTitle, VBox calendarCardDay) {
@@ -183,12 +185,11 @@ public class CalendarController {
 		} catch (IllegalArgumentException | IllegalAccessException e){
 			e.printStackTrace();
 		}
-		return null;
+		throw new IllegalStateException();
 	}
 
 	private String getCalendarCardTitleFromDate(LocalDate date) {
-		//return new SimpleDateFormat("MMMMM dd").format(date);
-		DateTimeFormatter dtf = new DateTimeFormatterBuilder().toFormatter();
+		DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("MMMM dd");
 		return date.format(dtf);
 	}
 
@@ -205,7 +206,9 @@ public class CalendarController {
 
 	private void calculatefirstDayInCalendar(LocalDate date) {
 		this.firstDayInCalendar = LocalDate.ofEpochDay(date.toEpochDay());
-		System.out.print("firstDayInCalendar:" + this.firstDayInCalendar);
+		while(!this.firstDayInCalendar.getDayOfWeek().equals(DayOfWeek.MONDAY)){
+			this.firstDayInCalendar = firstDayInCalendar.minusDays(1);
+		}
 	}
 
 	public void onPrevClickedMethod(javafx.event.Event ev){
@@ -223,7 +226,46 @@ public class CalendarController {
 	public void onClickedOnEventMethod(MouseEvent mouseEvent){
 		if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 2){
-
+            	Integer eventId = (Integer) ((Node) mouseEvent.getSource()).getProperties().get(EVENT_ID);
+            	Event event = eventManager.getById(eventId);
+            	try {
+        	        FXMLLoader fxmlLoader = new FXMLLoader();
+        	        fxmlLoader.setLocation(getClass().getResource("fxevent_edit.fxml"));
+        	        GridPane root = (GridPane) fxmlLoader.load();
+        	        root.getProperties().put(EVENT_ID, eventId);
+        	        for(Node node: root.getChildren()){
+        	        	if(EventEditController.datePickerId.equals(node.getId())){
+        	        		((DatePicker) node).setValue(event.getDate());
+        	        	}
+        	        	if(EventEditController.startTimeHoursId.equals(node.getId())){
+        	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("hh")));
+        	        	}
+        	        	if(EventEditController.startTimeMinutesId.equals(node.getId())){
+        	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("mm")));
+        	        	}
+        	        	if(EventEditController.endTimeHoursId.equals(node.getId())){
+        	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("hh")));
+        	        	}
+        	        	if(EventEditController.endTimeMinutesId.equals(node.getId())){
+        	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("mm")));
+        	        	}
+        	        	if(EventEditController.eventNameId.equals(node.getId())){
+        	        		((TextField) node).setText(event.getName());
+        	        	}
+        	        	if(EventEditController.eventDescriptionId.equals(node.getId())){
+        	        		((TextArea) node).setText(event.getDescription());
+        	        	}
+        	        }
+        	        Scene scene = new Scene(root,200, 200);
+        	        Stage stage = new Stage();
+        	        stage.setTitle("New Window");
+        	        stage.setScene(scene);
+        	        stage.initModality(Modality.APPLICATION_MODAL);
+        	        stage.show();
+        	        ComponentsManager.getInstance().getEventEditController().setCurrentlyEditedEventId(eventId);
+        	    } catch (IOException e) {
+        	        e.printStackTrace();
+        	    }
             }
         }
 	}
@@ -236,6 +278,10 @@ public class CalendarController {
                 handleAddEventForDateAction(LocalDate.ofEpochDay(xd));
             }
         }
+    }
+
+    private void handleUpdateEvent(Integer eventId){
+    	Event event = eventManager.getById(eventId);
     }
 
 	private void handleAddEventForDateAction(LocalDate date) {
@@ -251,7 +297,7 @@ public class CalendarController {
 	        }
 	        Scene scene = new Scene(root,200, 200);
 	        Stage stage = new Stage();
-	        stage.setTitle("New Window");
+	        stage.setTitle("Add/Edit event");
 	        stage.setScene(scene);
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.show();
@@ -278,5 +324,9 @@ public class CalendarController {
 
 	private void moveFirstDayInCalendarWeekAhead() {
 		this.firstDayInCalendar = firstDayInCalendar.plusDays(7);
+	}
+
+	public void requestReload() {
+		fillCalendar();
 	}
 }

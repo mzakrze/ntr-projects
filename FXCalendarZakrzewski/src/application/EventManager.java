@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -31,11 +32,11 @@ public class EventManager {
 		EventManager eventManager = EventManager.getInstance();
 		LocalDate today = LocalDate.now();
 		LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-		eventManager.insert(new Event(1, today, "name1", "desc1", LocalTime.of(1,2), LocalTime.of(3, 4)));
-		eventManager.insert(new Event(2, today, "name2", "desc2", LocalTime.of(5,6), LocalTime.of(7, 8)));
-		eventManager.insert(new Event(3, today, "name3", "desc3", LocalTime.of(9,10), LocalTime.of(11, 12)));
-		eventManager.insert(new Event(4, tomorrow, "name4", "desc4", LocalTime.of(1,2), LocalTime.of(3, 4)));
-		eventManager.insert(new Event(5, tomorrow, "name5", "desc5", LocalTime.of(5,6), LocalTime.of(7, 8)));
+		eventManager.insert(new Event(null, today, "name1", "desc1", LocalTime.of(1,2), LocalTime.of(3, 4)));
+		eventManager.insert(new Event(null, today, "name2", "desc2", LocalTime.of(5,6), LocalTime.of(7, 8)));
+		eventManager.insert(new Event(null, today, "name3", "desc3", LocalTime.of(9,10), LocalTime.of(11, 12)));
+		eventManager.insert(new Event(null, tomorrow, "name4", "desc4", LocalTime.of(1,2), LocalTime.of(3, 4)));
+		eventManager.insert(new Event(null, tomorrow, "name5", "desc5", LocalTime.of(5,6), LocalTime.of(7, 8)));
 
 		DateTimeFormatter sdf = new DateTimeFormatterBuilder().toFormatter();//("yyyyMMdd");
 		today.format(sdf);
@@ -49,27 +50,13 @@ public class EventManager {
 	}
 
 	public void insert(Event eventToAdd){
-		boolean isIdUNotUnique = events.stream().anyMatch(e -> e.getId().equals(eventToAdd.getId()));
-		if(isIdUNotUnique){
-			throw new IllegalStateException(); // TODO napisać własny wyjątek
-		}
-
-		if(eventToAdd.getDate() == null || eventToAdd.getName() == null){ //TODO
-			throw new IllegalStateException(); // TODO
-		}
-
-		if(!eventToAdd.getBeginTime().isBefore(eventToAdd.getEndTime())){
-			throw new IllegalStateException(); // TODO
-		}
+		eventToAdd.setId(nextId.incrementAndGet());
 		events.add(eventToAdd);
 	}
 
 	public List<Event> getSortedEventsForDay(LocalDate date){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); // TODO wyleczyć raka
-		DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendValue(ChronoField.DAY_OF_MONTH).appendValue(ChronoField.MONTH_OF_YEAR).appendValue(ChronoField.YEAR).toFormatter();
 		return events.stream()
-				//.filter(e -> sdf.format(e.getDate()).equals(sdf.format(date)))
-				.filter(e -> e.getDate().format(dtf).equals(date.format(dtf)))
+				.filter(e -> e.getDate().isEqual(date))
 				.sorted((e1, e2) -> e1.getBeginTime().compareTo(e2.getBeginTime()))
 				.collect(Collectors.toList());
 	}
@@ -78,9 +65,28 @@ public class EventManager {
 		if(event.getId() == null){
 			event.setId(nextId.incrementAndGet());
 		} else {
-			Integer index = events.indexOf(event);
-			events.remove(index);
+			events.remove(event);
 		}
 		events.add(event);
+	}
+
+	public Event getById(Integer eventId) {
+		// TODO Auto-generated method stub
+		Optional<Event> event = events.stream().filter(ev -> ev.getId().equals(eventId)).findAny();
+		if(event.isPresent()){
+			return event.get();
+		}
+		return null;
+	}
+
+	public void deleteById(Integer eventId) {
+		Event toDelete = null;
+		for(Event e : events){
+			if(e.getId().equals(eventId)){
+				toDelete = e;
+				break;
+			}
+		}
+		events.remove(toDelete);
 	}
 }
