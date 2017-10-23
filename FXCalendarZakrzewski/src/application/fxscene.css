@@ -1,5 +1,9 @@
 .root {
 -fx-font-size: 26px;
+-fx-min-height: 200px;
+-fx-max-height: 800px;
+-fx-min-width: 200px;
+-fx-max-width: 800px;
 }
 .button {
 -fx-background-radius: 5%;
@@ -11,12 +15,7 @@
 	-fx-background-color:rgb(141,162,222);
 	-fx-text-fill: rgb(041,062,222);
 	-fx-background-radius: 3px;
-	-fx-fill: true;
-	-fx-fit-to-height: true;
 	-fx-content-display: center;
-	-fx-arc-height: 100%;
-	-fx-arc-width: 100%;
-	-fx-cell-size: 100%;
 	-fx-padding: 2px;
     -fx-border-insets: 2px;
     -fx-background-insets: 2px;

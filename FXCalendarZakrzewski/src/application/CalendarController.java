@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -69,6 +70,12 @@ public class CalendarController {
 	@FXML private Label week3P;
 	@FXML private Label week4L;
 	@FXML private Label week4P;
+
+	// <prev/next><U/D>
+	@FXML private Label prevU;
+	@FXML private Label prevD;
+	@FXML private Label nextU;
+	@FXML private Label nextD;
 
 	private LocalDate today = LocalDate.now();
 	private LocalDate firstDayInCalendar;
@@ -275,7 +282,6 @@ public class CalendarController {
 	        stage.setScene(scene);
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.show();
-	        // TODO wyłaczyc resize, itp
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
@@ -287,5 +293,28 @@ public class CalendarController {
 
 	private void moveFirstDayInCalendarWeekAhead() {
 		this.firstDayInCalendar = firstDayInCalendar.plusDays(7);
+	}
+
+	public void widthChanged(Number d2) {
+		Double width = (Double) d2;
+		String style = "-fx-font-size:" + String.valueOf(Math.floor(width / 50)) + ";";
+		week1L.setStyle(style);
+		week1P.setStyle(style);
+		week2L.setStyle(style);
+		week2P.setStyle(style);
+		week3L.setStyle(style);
+		week3P.setStyle(style);
+		week4L.setStyle(style);
+		week4P.setStyle(style);
+		prevU.setStyle(style);
+		prevD.setStyle(style);
+		nextU.setStyle(style);
+		nextD.setStyle(style);
+	}
+
+	public void heightChanged(Number d2) {
+		// TODO Auto-generated method stub
+
+		//return null;
 	}
 }

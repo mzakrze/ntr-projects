@@ -32,7 +32,7 @@
       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
    </rowConstraints>
    <children>
-      <Label fx:id="week1L" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onPrevClickedMethod" styleClass="myLabel" text="prev" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <Label fx:id="prevU" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onPrevClickedMethod" styleClass="myLabel" text="prev" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Label>
@@ -46,17 +46,17 @@
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Friday" GridPane.columnIndex="5" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Saturday" GridPane.columnIndex="6" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Sunday" GridPane.columnIndex="7" />
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" />
+      <Label fx:id="nextU" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" />
       <Label fx:id="week1L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="1" />
       <Label fx:id="week2L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="2" />
       <Label fx:id="week3L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="3" />
       <Label fx:id="week4L" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.rowIndex="4" />
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="prev" GridPane.rowIndex="5" />
+      <Label fx:id="prevD" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="prev" GridPane.rowIndex="5" />
       <Label fx:id="week1P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="1" />
       <Label fx:id="week2P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="2" />
       <Label fx:id="week3P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="3" />
       <Label fx:id="week4P" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Label" GridPane.columnIndex="8" GridPane.rowIndex="4" />
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+      <Label fx:id="nextD" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNextClickedMethod" styleClass="myLabel" text="next" GridPane.columnIndex="8" GridPane.rowIndex="5" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Monday" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Tuesday" GridPane.columnIndex="2" GridPane.rowIndex="5" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" text="Wednesday" GridPane.columnIndex="3" GridPane.rowIndex="5" />

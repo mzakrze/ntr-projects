@@ -20,6 +20,13 @@ public class Main extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("FXCalendar");
             primaryStage.show();
+            primaryStage.setMinHeight(400);
+            primaryStage.setMaxHeight(1600);
+            primaryStage.setMinWidth(600);
+            primaryStage.setMaxWidth(1800);
+            CalendarController cc = ComponentsManager.getInstance().getCalendarController();
+            primaryStage.widthProperty().addListener((e, d1, d2) -> cc.widthChanged(d2));
+            primaryStage.heightProperty().addListener((e, d1, d2) -> cc.heightChanged(d2));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
