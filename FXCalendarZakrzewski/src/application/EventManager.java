@@ -1,27 +1,14 @@
 package application;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
-import javafx.scene.input.MouseEvent;
 
 public class EventManager {
 	private static EventManager instance = null;
@@ -37,9 +24,6 @@ public class EventManager {
 		eventManager.insert(new Event(null, today, "name3", "desc3", LocalTime.of(9,10), LocalTime.of(11, 12)));
 		eventManager.insert(new Event(null, tomorrow, "name4", "desc4", LocalTime.of(1,2), LocalTime.of(3, 4)));
 		eventManager.insert(new Event(null, tomorrow, "name5", "desc5", LocalTime.of(5,6), LocalTime.of(7, 8)));
-
-		DateTimeFormatter sdf = new DateTimeFormatterBuilder().toFormatter();//("yyyyMMdd");
-		today.format(sdf);
 	}
 
 	public static EventManager getInstance(){
@@ -71,7 +55,6 @@ public class EventManager {
 	}
 
 	public Event getById(Integer eventId) {
-		// TODO Auto-generated method stub
 		Optional<Event> event = events.stream().filter(ev -> ev.getId().equals(eventId)).findAny();
 		if(event.isPresent()){
 			return event.get();

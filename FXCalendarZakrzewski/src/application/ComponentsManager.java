@@ -5,14 +5,13 @@ public class ComponentsManager {
 	private EventEditController eventEditController;
 	private CalendarController calendarController;
 
+	private ComponentsManager(){ }
+
 	public static ComponentsManager getInstance(){
 		if(INSTANCE == null){
 			INSTANCE = new ComponentsManager();
 		}
 		return INSTANCE;
-	}
-	private ComponentsManager(){
-
 	}
 
 	public void registerComponentAsEventEditController(EventEditController controller){
@@ -29,6 +28,4 @@ public class ComponentsManager {
 	public CalendarController getCalendarController() {
 		return calendarController;
 	}
-
-
 }

@@ -2,23 +2,15 @@ package application;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.JTextField;
+import com.sun.xml.internal.bind.v2.WellKnownNamespace;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
@@ -29,13 +21,15 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class CalendarController {
+	private final static String CALENDAR_CARD_DAY = "CALENDAR_CARD_DAY";
+	private final static String EVENT_ID = "EVENT_ID";
+
 	// vbox<wiersz><kolumna>
 	@FXML private VBox vbox11;
 	@FXML private VBox vbox21;
@@ -80,57 +74,121 @@ public class CalendarController {
 	private LocalDate firstDayInCalendar;
 	private EventManager eventManager = EventManager.getInstance();
 
-	private Label[][] calendarCards = new Label[4][7];
-	private List<Label>[][] calendarCardsEvents = new ArrayList[4][7];
-
-	private final static String CALENDAR_CARD_DAY = "CALENDAR_CARD_DAY";
-	private final static String CALENDAR_CARD_DAY_EVENT_ID = "CALENDAR_CARD_DAY_EVENT_ID";
-	private static final String EVENT_ID = "EVENT_ID";
+	{
+		ComponentsManager.getInstance().registerComponentAsCalendarController(this);
+	}
 
 	public CalendarController(){
-		ComponentsManager.getInstance().registerComponentAsCalendarController(this);
+		//ComponentsManager.getInstance().registerComponentAsCalendarController(this);
 	}
 
 	@FXML
     public void initialize() {
 		calculatefirstDayInCalendar(today);
-
 		fillCalendar();
     }
+
+	public void requestReload() {
+		fillCalendar();
+	}
+
+	public void onPrevClickedMethod(javafx.event.Event ev){
+		moveFirstDayInCalendarWeekBackwards();
+		fillCalendar();
+	}
+
+	public void onNextClickedMethod(javafx.event.Event event){
+		moveFirstDayInCalendarWeekAhead();
+		fillCalendar();
+	}
+
+	public void onClickedOnEventMethod(MouseEvent mouseEvent){
+		if(!mouseEvent.getButton().equals(MouseButton.PRIMARY) || mouseEvent.getClickCount() != 2){
+            return;
+        }
+		Integer eventId = (Integer) ((Node) mouseEvent.getSource()).getProperties().get(EVENT_ID);
+
+    	Event event = eventManager.getById(eventId);
+    	try {
+	        FXMLLoader fxmlLoader = new FXMLLoader();
+	        fxmlLoader.setLocation(getClass().getResource("fxevent_edit.fxml"));
+	        GridPane root = (GridPane) fxmlLoader.load();
+	        for(Node node: root.getChildren()){
+	        	if(EventEditController.datePickerId.equals(node.getId())){
+	        		((DatePicker) node).setValue(event.getDate());
+	        	} else if(EventEditController.startTimeHoursId.equals(node.getId())){
+	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("hh")));
+	        	} else if(EventEditController.startTimeMinutesId.equals(node.getId())){
+	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("mm")));
+	        	} else if(EventEditController.endTimeHoursId.equals(node.getId())){
+	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("hh")));
+	        	} else if(EventEditController.endTimeMinutesId.equals(node.getId())){
+	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("mm")));
+	        	} else if(EventEditController.eventNameId.equals(node.getId())){
+	        		((TextField) node).setText(event.getName());
+	        	} else if(EventEditController.eventDescriptionId.equals(node.getId())){
+	        		((TextArea) node).setText(event.getDescription());
+	        	}
+	        }
+	        Scene scene = new Scene(root,200, 200);
+	        Stage stage = new Stage();
+	        stage.setTitle("Edit event");
+	        stage.setScene(scene);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.show();
+	        ComponentsManager.getInstance().getEventEditController().setCurrentlyEditedEventId(eventId);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+    public void onClickedOnDayMethod(MouseEvent mouseEvent) {
+        if(!mouseEvent.getButton().equals(MouseButton.PRIMARY) || mouseEvent.getClickCount() != 2){
+            return;
+        }
+        Label labelClickedOn = (Label) mouseEvent.getSource();
+        Long xd = (Long) labelClickedOn.getProperties().get(CALENDAR_CARD_DAY);
+        handleAddEventForDateAction(LocalDate.ofEpochDay(xd));
+    }
+
+	private void calculatefirstDayInCalendar(LocalDate date) {
+		this.firstDayInCalendar = LocalDate.ofEpochDay(date.toEpochDay());
+		while(!this.firstDayInCalendar.getDayOfWeek().equals(DayOfWeek.MONDAY)){
+			this.firstDayInCalendar = firstDayInCalendar.minusDays(1);
+		}
+	}
 
 	private void fillCalendar() {
 		LocalDate[][] calendarCard = get28nextDaysFromDay(this.firstDayInCalendar);
 
 		for(int week = 0; week < 4; week++){
-			Label[] weekLabels = getLabelInstancesForWeek(week);
-			String text = getTextForWeekLabel(calendarCard[week][0]);
-			weekLabels[0].setText(text);
-			weekLabels[1].setText(text);
-
+			setTextForWeekLabels(week, calendarCard[week][0]);
 			for(int day = 0; day < 7; day++){
 				LocalDate date = calendarCard[week][day];
-				String calendarCardDayTitle = getCalendarCardTitleFromDate(date);
-				List<Event> eventsForDay = eventManager.getSortedEventsForDay(date);
 
+				List<Event> eventsForDay = eventManager.getSortedEventsForDay(date);
 				VBox calendarCardDay = getVBoxInstanceOnWeekAndDay(week, day);
 
-
-
-				this.calendarCards[week][day] = setTitleForCalendarCardDay(date, calendarCardDayTitle, calendarCardDay);
-				this.calendarCardsEvents[week][day] = setEventListForCalendarCardDay(eventsForDay, calendarCardDay);
+				setTitleForCalendarCardDay(date, calendarCardDay);
+				setEventListForCalendarCardDay(eventsForDay, calendarCardDay);
 			}
 		}
 	}
 
-	private String getTextForWeekLabel(LocalDate date) {
+	private void setTextForWeekLabels(int week, LocalDate date) {
+		Label[] weekLabels = getLabelInstancesForWeek(week);
 		WeekFields weekFields = WeekFields.of(Locale.getDefault());
 		Integer weekNr = date.get(weekFields.weekOfWeekBasedYear());
 		Integer yearNr = date.getYear();
-		return "W" + weekNr + " " + yearNr;
+		String text = "W" + weekNr + "\n" + yearNr;
+		weekLabels[0].setText(text);
+		//weekLabels[0].setWrapText(true);
+		weekLabels[1].setText(text);
+		//weekLabels[1].setWrapText(true);
 	}
 
 	private Label[] getLabelInstancesForWeek(int week) {
-		week++;
+		week++; //zmiena konwencji nadawania id dla pól w scenebuilderze na indeksowanie tablic
 		try {
 			Label leftLabel = (Label) this.getClass().getDeclaredField("week"+week+"L").get(this);
 			Label rightLabel = (Label) this.getClass().getDeclaredField("week"+week+"P").get(this);
@@ -142,8 +200,7 @@ public class CalendarController {
 		throw new IllegalStateException();
 	}
 
-	private List<Label> setEventListForCalendarCardDay(List<Event> eventsForDay, VBox calendarCardDay) {
-		List<Label> labels = new ArrayList<>();
+	private void setEventListForCalendarCardDay(List<Event> eventsForDay, VBox calendarCardDay) {
 		VBox eventsContainer = (VBox) calendarCardDay.getChildren().get(1);
 		eventsContainer.getChildren().clear();
 		for(Event event : eventsForDay){
@@ -154,9 +211,7 @@ public class CalendarController {
 			eventDisplay.getProperties().put(EVENT_ID, event.getId());
 			eventDisplay.setOnMouseClicked(e -> onClickedOnEventMethod(e));
 			eventsContainer.getChildren().add(eventDisplay);
-			labels.add(eventDisplay);
 		}
-		return labels;
 	}
 
 	private String getTextForEvent(Event event){
@@ -166,16 +221,15 @@ public class CalendarController {
 		return beginTime + "-" + endTime + " " + event.getName();
 	}
 
-	private Label setTitleForCalendarCardDay(LocalDate date, String calendarCardDayTitle, VBox calendarCardDay) {
+	private Label setTitleForCalendarCardDay(LocalDate date, VBox calendarCardDay) {
 		Label titleLabel = (Label) calendarCardDay.getChildren().get(0);
-		titleLabel.setText(calendarCardDayTitle);
+		titleLabel.setText(getCalendarCardTitleFromDate(date));
 		titleLabel.getProperties().put(CALENDAR_CARD_DAY, date.toEpochDay());
 		return titleLabel;
 	}
 
 	private VBox getVBoxInstanceOnWeekAndDay(int week, int day) {
-		week++; day++; // zmiana konwencji
-		// TODO - uwspólnieć konwencje
+		week++; day++; //zmiena konwencji nadawania id dla pól w scenebuilderze na indeksowanie tablic
 		try {
 			Field field = this.getClass().getDeclaredField("vbox"+week+""+day);
 			VBox toReturn = (VBox) field.get(this);
@@ -204,86 +258,6 @@ public class CalendarController {
 		return toReturn;
 	}
 
-	private void calculatefirstDayInCalendar(LocalDate date) {
-		this.firstDayInCalendar = LocalDate.ofEpochDay(date.toEpochDay());
-		while(!this.firstDayInCalendar.getDayOfWeek().equals(DayOfWeek.MONDAY)){
-			this.firstDayInCalendar = firstDayInCalendar.minusDays(1);
-		}
-	}
-
-	public void onPrevClickedMethod(javafx.event.Event ev){
-		moveFirstDayInCalendarWeekBackwards();
-
-		fillCalendar();
-	}
-
-	public void onNextClickedMethod(javafx.event.Event event){
-		moveFirstDayInCalendarWeekAhead();
-
-		fillCalendar();
-	}
-
-	public void onClickedOnEventMethod(MouseEvent mouseEvent){
-		if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-            if(mouseEvent.getClickCount() == 2){
-            	Integer eventId = (Integer) ((Node) mouseEvent.getSource()).getProperties().get(EVENT_ID);
-            	Event event = eventManager.getById(eventId);
-            	try {
-        	        FXMLLoader fxmlLoader = new FXMLLoader();
-        	        fxmlLoader.setLocation(getClass().getResource("fxevent_edit.fxml"));
-        	        GridPane root = (GridPane) fxmlLoader.load();
-        	        root.getProperties().put(EVENT_ID, eventId);
-        	        for(Node node: root.getChildren()){
-        	        	if(EventEditController.datePickerId.equals(node.getId())){
-        	        		((DatePicker) node).setValue(event.getDate());
-        	        	}
-        	        	if(EventEditController.startTimeHoursId.equals(node.getId())){
-        	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("hh")));
-        	        	}
-        	        	if(EventEditController.startTimeMinutesId.equals(node.getId())){
-        	        		((TextField) node).setText(event.getBeginTime().format(DateTimeFormatter.ofPattern("mm")));
-        	        	}
-        	        	if(EventEditController.endTimeHoursId.equals(node.getId())){
-        	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("hh")));
-        	        	}
-        	        	if(EventEditController.endTimeMinutesId.equals(node.getId())){
-        	        		((TextField) node).setText(event.getEndTime().format(DateTimeFormatter.ofPattern("mm")));
-        	        	}
-        	        	if(EventEditController.eventNameId.equals(node.getId())){
-        	        		((TextField) node).setText(event.getName());
-        	        	}
-        	        	if(EventEditController.eventDescriptionId.equals(node.getId())){
-        	        		((TextArea) node).setText(event.getDescription());
-        	        	}
-        	        }
-        	        Scene scene = new Scene(root,200, 200);
-        	        Stage stage = new Stage();
-        	        stage.setTitle("New Window");
-        	        stage.setScene(scene);
-        	        stage.initModality(Modality.APPLICATION_MODAL);
-        	        stage.show();
-        	        ComponentsManager.getInstance().getEventEditController().setCurrentlyEditedEventId(eventId);
-        	    } catch (IOException e) {
-        	        e.printStackTrace();
-        	    }
-            }
-        }
-	}
-
-    public void onClickedOnDayMethod(MouseEvent mouseEvent) {
-        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-            if(mouseEvent.getClickCount() == 2){
-            	Label labelClickedOn = (Label) mouseEvent.getSource();
-                Long xd = (Long) labelClickedOn.getProperties().get(CALENDAR_CARD_DAY);
-                handleAddEventForDateAction(LocalDate.ofEpochDay(xd));
-            }
-        }
-    }
-
-    private void handleUpdateEvent(Integer eventId){
-    	Event event = eventManager.getById(eventId);
-    }
-
 	private void handleAddEventForDateAction(LocalDate date) {
 		try {
 	        FXMLLoader fxmlLoader = new FXMLLoader();
@@ -291,7 +265,7 @@ public class CalendarController {
 	        GridPane root = (GridPane) fxmlLoader.load();
 	        root.getProperties().put(EVENT_ID, null);
 	        for(Node node: root.getChildren()){
-	        	if(node instanceof DatePicker){
+	        	if(EventEditController.datePickerId.equals(node.getId())){
 	        		((DatePicker) node).setValue(date);
 	        	}
 	        }
@@ -301,21 +275,10 @@ public class CalendarController {
 	        stage.setScene(scene);
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.show();
-
-
+	        // TODO wyłaczyc resize, itp
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	}
-
-	private void onEventEditSubmitButtonClicked(MouseEvent event){
-		((Node) event.getSource()).getParent();
-	}
-
-	private void displayAddEventForWeekDay(int week, int day) {
-		System.out.println("week:" + week + ", day:" + day);
-		// TODO Auto-generated method stub
-
 	}
 
 	private void moveFirstDayInCalendarWeekBackwards() {
@@ -324,9 +287,5 @@ public class CalendarController {
 
 	private void moveFirstDayInCalendarWeekAhead() {
 		this.firstDayInCalendar = firstDayInCalendar.plusDays(7);
-	}
-
-	public void requestReload() {
-		fillCalendar();
 	}
 }
