@@ -1,0 +1,46 @@
+﻿<Window x:Class="WpfApp2.View.SetPreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2.View"
+        xmlns:vm="clr-namespace:WpfApp2.ViewModel"
+        mc:Ignorable="d"
+        Title="SetPreferencesWindow" Height="300" Width="300">
+    <Window.DataContext>
+        <vm:SetPreferencesWindowViewModel x:Name="setPreferencesWindowViewModel"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+             <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Select main color"></Label>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Select font">
+            <Label.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+            </Label.Resources>
+        </Label>
+
+        <ComboBox Grid.Column="1" Grid.Row="0" Margin="40" SelectedItem="{Binding Color, Mode=TwoWay}">
+            <ComboBoxItem>Blue</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">Green</ComboBoxItem>
+            <ComboBoxItem>Magenta</ComboBoxItem>
+        </ComboBox>
+
+        <ComboBox Grid.Column="1" Grid.Row="2" Margin="40" SelectedItem="{Binding Font, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True">
+            <ComboBoxItem FontFamily="Times New Roman">Times new roman</ComboBoxItem>
+            <ComboBoxItem FontFamily="Arial">Arial</ComboBoxItem>
+            <ComboBoxItem FontFamily="Serif">Serif</ComboBoxItem>
+        </ComboBox>
+    </Grid>
+</Window>

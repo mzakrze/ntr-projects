@@ -1,0 +1,172 @@
+﻿<Window x:Class="WpfApp2.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:WpfApp2.View"
+        xmlns:vm="clr-namespace:WpfApp2.ViewModel"
+        xmlns:local="clr-namespace:WpfApp2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="{Binding WindowWidth, Mode=TwoWay}">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <CollectionViewSource x:Key="ViewSource1" Source="{Binding DaysCards}"/>
+        <CollectionViewSource x:Key="ViewSource2" Source="{Binding LabelWrappers}"/>
+        <CompositeCollection x:Key="CalendarCards">
+            <CollectionContainer Collection="{Binding Source={StaticResource ViewSource1}}" />
+            <CollectionContainer Collection="{Binding Source={StaticResource ViewSource2}}" />
+            <Label Grid.Row="0" Grid.Column="1" Content="Monday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="2" Content="Tuesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="3" Content="Wednesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="4" Content="Thursday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="5" Content="Friday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="6" Content="Saturday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="7" Content="Sunday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="1" Content="Monday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="2" Content="Tuesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="3" Content="Wednesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="4" Content="Thursday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="5" Content="Friday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="6" Content="Saturday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="5" Grid.Column="7" Content="Sunday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+
+            <Label Grid.Row="0" Grid.Column="8" Content="next" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Label.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.NextWeekCommand,
+                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
+                </Label.InputBindings>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="0" Content="prev" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Label.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.PrevWeekCommand,
+                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
+                </Label.InputBindings>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="8" Content="next" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Label.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.NextWeekCommand,
+                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
+                </Label.InputBindings>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="0" Content="prev" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Label.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.PrevWeekCommand,
+                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
+                </Label.InputBindings>
+            </Label>
+        </CompositeCollection>
+        <vm:ViewEventIdConverter x:Key="ViewEventIdConverter" />
+        <DataTemplate x:Key="myWrapperDataTemplate">
+            <Label Content="{Binding Text}"></Label>
+        </DataTemplate>
+        <DataTemplate x:Key="mySingleEvent">
+            <Label Content="{Binding Name}">
+                <Label.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditEventCommand,
+                        RelativeSource={RelativeSource AncestorLevel=2, AncestorType=ItemsControl}}" >
+                        <MouseBinding.CommandParameter>
+                            <MultiBinding Converter="{StaticResource ViewEventIdConverter}">
+                                <Binding Path="Id"/>
+                                <Binding Path="Name" />
+                                <Binding Path="Date" />
+                                <Binding Path="BeginTime" />
+                                <Binding Path="EndTime" />
+                            </MultiBinding>
+                        </MouseBinding.CommandParameter>
+                    </MouseBinding>
+                </Label.InputBindings>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="mySingleDayCard">
+            <StackPanel>
+                <Label Content="{Binding Name}">
+                    <Label.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.AddEventCommand,
+                    RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding Date}"></MouseBinding>
+                    </Label.InputBindings>
+                </Label>
+                <ListView
+                      VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                      ItemsSource="{Binding Events}"
+                      ItemTemplate="{Binding Source={StaticResource mySingleEvent}}"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.CanContentScroll="True">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+            
+        </DataTemplate>
+        <vm:DayCardTemplateSelection x:Key="GridElementTemplateSelector"
+                                        LabelWrapperTemplate="{StaticResource myWrapperDataTemplate}"
+                                        CalendarCardTemplate="{StaticResource mySingleDayCard}" />
+
+        <vm:MainWindowViewModel x:Key="mainWindowViewModel" />
+    </Window.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                <Setter Property="FontFamily" Value="{Binding DataContext.FontFamily, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="5,5,5,5" />
+            </Style>
+        </Grid.Resources>
+
+        <ItemsControl ItemTemplateSelector="{StaticResource GridElementTemplateSelector}" ItemsSource="{StaticResource CalendarCards}">
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding Path=Row}" />
+                    <Setter Property="Grid.Column" Value="{Binding Path=Column}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid ShowGridLines="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                    </Grid>
+
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+        </ItemsControl>
+
+
+        <Grid.InputBindings>
+            <MouseBinding MouseAction="RightClick" Command="{Binding ShowSetPreferencesWindow}"></MouseBinding>
+        </Grid.InputBindings>
+
+
+
+    </Grid>
+    
+</Window>
