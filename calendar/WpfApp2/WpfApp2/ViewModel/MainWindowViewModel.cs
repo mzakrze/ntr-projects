@@ -14,13 +14,14 @@ namespace WpfApp2.ViewModel
 {
     public class MainWindowViewModel: INotifyPropertyChanged
     {
-        private int _windowWidth = 555;
+        private EventView _eventView;
+        private int _windowWidth = 600;
         public int WindowWidth {
             get { return _windowWidth;  }
-            set { _windowWidth = value; FontSize = value / 60; NotifyPropertyChanged("WindowWidth");  }
+            set { _windowWidth = value; FontSize = value / 50; NotifyPropertyChanged("WindowWidth");  }
         }
 
-        private int _fontSize = 4;
+        private int _fontSize = 12;
         public int FontSize
         {
             get { return _fontSize; }
@@ -32,6 +33,13 @@ namespace WpfApp2.ViewModel
         {
             get { return _fontFamily; }
             set { _fontFamily = value; NotifyPropertyChanged("FontFamily"); }
+        }
+
+        private string _themeColor = "Blue";
+        public string ThemeColor
+        {
+            get { return _themeColor; }
+            set { _themeColor = value; NotifyPropertyChanged("ThemeColor"); }
         }
 
         public ObservableCollection<DayCard> DaysCards { get; set; }
@@ -60,6 +68,8 @@ namespace WpfApp2.ViewModel
         {
             SetPreferencesWindow preferencesWindow = new SetPreferencesWindow();
             SetPreferencesWindowViewModel setPreferencesWindowViewModel = preferencesWindow.setPreferencesWindowViewModel;
+            setPreferencesWindowViewModel.Font = _fontFamily;
+            setPreferencesWindowViewModel.Color = _themeColor;
             setPreferencesWindowViewModel.PropertyChanged += PreferencesChanged;
             preferencesWindow.Show();
         }
@@ -68,11 +78,12 @@ namespace WpfApp2.ViewModel
         {
             if(e.PropertyName == "Font")
             {
-                string font = (sender as SetPreferencesWindowViewModel).Font;
+                string font = ((sender as SetPreferencesWindowViewModel).Font as String);
                 this.FontFamily = font;
             } else if(e.PropertyName == "Color")
             {
-                string color = (sender as SetPreferencesWindowViewModel).Color;
+                string color = ((sender as SetPreferencesWindowViewModel).Color as String);
+                this.ThemeColor = color;
             }
         }
 
@@ -95,31 +106,33 @@ namespace WpfApp2.ViewModel
             EventViewModel eventViewModel = eventView.eventViewModel;
             eventViewModel.Id = ev.Id.ToString();
             eventViewModel.Name = ev.Name;
-            eventViewModel.BeginTime = ev.BeginTime.ToString("hh:mm");
-            eventViewModel.EndTime = ev.EndTime.ToString("hh:mm");
-            eventViewModel.Date = ev.Date.ToString(@"dd\/mm\/yyyy");
+            eventViewModel.BeginTime = ev.BeginTime.ToString("HH:mm");
+            eventViewModel.EndTime = ev.EndTime.ToString("HH:mm");
+            eventViewModel.Date = ev.Date.ToString(@"dd\/MM\/yyyy");
             eventView.Show();
         }
 
         private void AddEventCommandExecute(object parameter)
         {
-            EventView eventView = new EventView();
-            EventViewModel eventViewModel = eventView.eventViewModel;
-            DateTime dateTime = (DateTime) parameter;
-            eventViewModel.Date = dateTime.ToString(@"dd\/MM\/yyyy");
-            eventView.Show();
-            
+            if(_eventView == null || !_eventView.IsActive)
+            {
+                _eventView = new EventView();
+                EventViewModel eventViewModel = _eventView.eventViewModel;
+                DateTime dateTime = (DateTime) parameter;
+                eventViewModel.Date = dateTime.ToString(@"dd\/MM\/yyyy");
+                _eventView.ShowDialog();
+            }
         }
 
         private void FillCallendar()
         {
             DateTime dateTime = this.FirstDayInCalendar.AddDays(0); //copy
             DaysCards.Clear();
-            for (int row = 0; row < 4; row++)
+            for (int row = 1; row <= 4; row++)
             {
-                for (int column = 0; column < 7; column++)
+                for (int column = 1; column <= 7; column++)
                 {
-                    DayCard dayCard = new DayCard(dateTime, dateTime.ToString("MMMM dd"), row + 1, column + 1);
+                    DayCard dayCard = new DayCard(dateTime, dateTime.ToString("MMMM dd"), row, column);
                     DaysCards.Add(dayCard);
                     dateTime = dateTime.AddDays(1);
                 }
@@ -137,8 +150,6 @@ namespace WpfApp2.ViewModel
             LabelWrappers.Add(new LabelWrapper("w" + (week + 2) + "\n" + year, 3, 8));
             LabelWrappers.Add(new LabelWrapper("w" + (week + 3) + "\n" + year, 4, 0));
             LabelWrappers.Add(new LabelWrapper("w" + (week + 3) + "\n" + year, 4, 8));
-
-            Calendar.Instance.Events.CollectionChanged += new NotifyCollectionChangedEventHandler(MyHandleEventsChangedFunction);
 
             FillCallendarDaysCards();
         }
@@ -178,7 +189,7 @@ namespace WpfApp2.ViewModel
                 {
                     return;
                 }
-                int column = (int)ev.Date.DayOfWeek - 1;
+                int column = (int)ev.Date.DayOfWeek;
                 if (column == 0) column = 7;
                 int row = (ev.Date.DayOfYear - FirstDayInCalendar.DayOfYear) / 7 + 1;
                 this.DaysCards.First((e) => e.Row == row && column == e.Column).Events.Add(ev);
@@ -282,6 +293,26 @@ namespace WpfApp2.ViewModel
         public override string ToString()
         {
             return Date.ToString();
+        }
+    }
+
+    public class IsTodayConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is DateTime)
+            {
+                return ((DateTime)value).Date.Equals(DateTime.Now.Date);
+            }
+            else
+            {
+                return DependencyProperty.UnsetValue;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return Binding.DoNothing;
         }
     }
 }

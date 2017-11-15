@@ -17,21 +17,6 @@ namespace WpfApp2.Model
                 if (instance == null)
                 {
                     instance = new Calendar();
-
-                    DateTime d = new DateTime(2017, 11, 7);
-                    Event Ev;
-                    Ev = new Event(null, "n1", d, d.AddHours(1), d.AddHours(2));
-                    instance.UpsertEvent(Ev);
-                    /*
-                    Ev = new Event(null, "n2", new DateTime(2017, 11, 4), "12:12", "13:13");
-                    instance.UpsertEvent(Ev);
-                    Ev = new Event(null, "n3", new DateTime(2017, 11, 5), "12:12", "13:13");
-                    instance.UpsertEvent(Ev);
-                    Ev = new Event(null, "n4", new DateTime(2017, 11, 5), "12:12", "13:13");
-                    instance.UpsertEvent(Ev);
-                    Ev = new Event(null, "n5", new DateTime(2017, 11, 5), "12:12", "13:13");
-                    instance.UpsertEvent(Ev);
-                    */
                 }
                 return instance;
             }
@@ -39,7 +24,6 @@ namespace WpfApp2.Model
 
         public ObservableCollection<Event> Events = new ObservableCollection<Event>();
         
-
         private int eventNextId = 0;
         
         public void UpsertEvent(Event Ev)
@@ -50,16 +34,14 @@ namespace WpfApp2.Model
                 Events.Add(Ev);
             } else
             {
-                int index = Events.IndexOf(Ev);
-                Events.RemoveAt(index);
+                DeleteEventById(Ev.Id);
                 Events.Add(Ev);
             }
-            
         }
 
-        public void DeleteEventById(int Id)
+        public void DeleteEventById(int? Id)
         {
-            // TODO
+            Events.Remove(new Event(Id));
         }
     }
 
@@ -72,6 +54,11 @@ namespace WpfApp2.Model
         public DateTime Date { get; set; }
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
+
+        public Event(int? id)
+        {
+            Id = id;
+        }
 
         public Event(int? id, string name, DateTime date, DateTime beginTime, DateTime endTime)
         {

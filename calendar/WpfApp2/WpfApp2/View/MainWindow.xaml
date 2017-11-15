@@ -12,54 +12,135 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <vm:IsTodayConverter x:Key="IsTodayConverter" />
+        <Style TargetType="Label" x:Key="myStaticLabel">
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Setter>
+            <Setter Property="Foreground" Value="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Setter>
+            <Setter Property="Margin" Value="2"/>
+
+        </Style>
         <CollectionViewSource x:Key="ViewSource1" Source="{Binding DaysCards}"/>
         <CollectionViewSource x:Key="ViewSource2" Source="{Binding LabelWrappers}"/>
         <CompositeCollection x:Key="CalendarCards">
             <CollectionContainer Collection="{Binding Source={StaticResource ViewSource1}}" />
             <CollectionContainer Collection="{Binding Source={StaticResource ViewSource2}}" />
-            <Label Grid.Row="0" Grid.Column="1" Content="Monday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="2" Content="Tuesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="3" Content="Wednesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="4" Content="Thursday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="5" Content="Friday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="6" Content="Saturday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="0" Grid.Column="7" Content="Sunday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="1" Content="Monday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="2" Content="Tuesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="3" Content="Wednesday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="4" Content="Thursday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="5" Content="Friday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="6" Content="Saturday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
-            <Label Grid.Row="5" Grid.Column="7" Content="Sunday" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"></Label>
+            <Label Grid.Row="0" Grid.Column="1" Content="Monday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="2" Content="Tuesday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="3" Content="Wednesday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="4" Content="Thursday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="5" Content="Friday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="6" Content="Saturday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="0" Grid.Column="7" Content="Sunday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="1" Content="Monday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="2" Content="Tuesday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="3" Content="Wednesday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="4" Content="Thursday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="5" Content="Friday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="6" Content="Saturday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+            <Label Grid.Row="5" Grid.Column="7" Content="Sunday" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
 
-            <Label Grid.Row="0" Grid.Column="8" Content="next" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+            <Label Grid.Row="0" Grid.Column="8" Content="next" Style="{StaticResource myStaticLabel}">
                 <Label.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.NextWeekCommand,
                     RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
                 </Label.InputBindings>
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
             </Label>
-            <Label Grid.Row="0" Grid.Column="0" Content="prev" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+            <Label Grid.Row="0" Grid.Column="0" Content="prev" Style="{StaticResource myStaticLabel}" Margin="2">
                 <Label.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.PrevWeekCommand,
                     RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
                 </Label.InputBindings>
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
             </Label>
-            <Label Grid.Row="5" Grid.Column="8" Content="next" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+            <Label Grid.Row="5" Grid.Column="8" Content="next" Style="{StaticResource myStaticLabel}">
                 <Label.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.NextWeekCommand,
                     RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
                 </Label.InputBindings>
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
             </Label>
-            <Label Grid.Row="5" Grid.Column="0" Content="prev" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+            <Label Grid.Row="5" Grid.Column="0" Content="prev" Style="{StaticResource myStaticLabel}">
                 <Label.InputBindings>
                     <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.PrevWeekCommand,
                     RelativeSource={RelativeSource AncestorType=ItemsControl}}"></MouseBinding>
                 </Label.InputBindings>
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
             </Label>
         </CompositeCollection>
         <vm:ViewEventIdConverter x:Key="ViewEventIdConverter" />
         <DataTemplate x:Key="myWrapperDataTemplate">
-            <Label Content="{Binding Text}"></Label>
+            <Label Content="{Binding Text}" Style="{StaticResource myStaticLabel}">
+                <Label.Background>
+                    <SolidColorBrush Color="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
         </DataTemplate>
         <DataTemplate x:Key="mySingleEvent">
             <Label Content="{Binding Name}">
@@ -79,21 +160,30 @@
                 </Label.InputBindings>
             </Label>
         </DataTemplate>
+        <Style TargetType="DockPanel" x:Key="calendarCard">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Date, Converter={StaticResource IsTodayConverter}}" Value="true">
+                    <Setter Property="Background" Value="Aqua" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <DataTemplate x:Key="mySingleDayCard">
-            <StackPanel>
-                <Label Content="{Binding Name}">
+            <DockPanel Style="{StaticResource calendarCard}">
+                <Label Content="{Binding Name}" DockPanel.Dock="Top">
                     <Label.InputBindings>
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.AddEventCommand,
                     RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding Date}"></MouseBinding>
                     </Label.InputBindings>
                 </Label>
                 <ListView
+                    DockPanel.Dock="Bottom"
                       VerticalAlignment="Stretch"
                     VerticalContentAlignment="Stretch"
                       ItemsSource="{Binding Events}"
                       ItemTemplate="{Binding Source={StaticResource mySingleEvent}}"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       ScrollViewer.CanContentScroll="True">
+
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
@@ -101,8 +191,8 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
-            </StackPanel>
-            
+            </DockPanel>
+
         </DataTemplate>
         <vm:DayCardTemplateSelection x:Key="GridElementTemplateSelector"
                                         LabelWrapperTemplate="{StaticResource myWrapperDataTemplate}"
@@ -116,14 +206,20 @@
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                <Setter Property="Foreground" Value="{Binding DataContext.ThemeColor, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                 <Setter Property="FontFamily" Value="{Binding DataContext.FontFamily, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
             </Style>
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="5,5,5,5" />
             </Style>
         </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="186*"/>
+            <RowDefinition Height="66*"/>
+            <RowDefinition Height="67*"/>
+        </Grid.RowDefinitions>
 
-        <ItemsControl ItemTemplateSelector="{StaticResource GridElementTemplateSelector}" ItemsSource="{StaticResource CalendarCards}">
+        <ItemsControl ItemTemplateSelector="{StaticResource GridElementTemplateSelector}" ItemsSource="{StaticResource CalendarCards}" Grid.RowSpan="3">
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="Grid.Row" Value="{Binding Path=Row}" />
@@ -143,13 +239,13 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
 
@@ -168,5 +264,5 @@
 
 
     </Grid>
-    
+
 </Window>

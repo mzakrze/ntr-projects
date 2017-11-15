@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:WpfApp2.ViewModel"
         xmlns:local="clr-namespace:WpfApp2.View"
         mc:Ignorable="d"
-        Title="EventView" Height="300" Width="300">
+        Title="EventView" Height="200" Width="300" ResizeMode="NoResize">
     <Window.DataContext>
         <vm:EventViewModel x:Name="eventViewModel"/>
     </Window.DataContext>
@@ -46,6 +46,7 @@
         <Label Grid.Row="1" Grid.Column="0" Content="BeginTime:" />
         <Label Grid.Row="2" Grid.Column="0" Content="EndTime:" />
         <Label Grid.Row="3" Grid.Column="0" Content="Name:" />
+        <Button Grid.Row="4" Grid.Column="0" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=eventView}">Delete</Button>
         <Button Grid.Row="4" Grid.Column="1" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=eventView}">Save</Button>
         <Button Grid.Row="4" Grid.Column="2" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=eventView}">Cancel</Button>
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Date, Mode=TwoWay, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"/>

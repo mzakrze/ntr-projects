@@ -4,27 +4,36 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WpfApp2.ViewModel
 {
     public class SetPreferencesWindowViewModel : INotifyPropertyChanged
     {
         private string _font = "Arial";
-        public string Font
+        public object Font
         {
             get { return _font; }
             set {
-                int length = "System.Windows.Controls.ComboBoxItem: ".Length;
-                _font = value.Substring(length); ;
+                var comboBoxItem = (value as ComboBoxItem);
+                if(comboBoxItem == null) { _font = (value as String); }
+                else { _font = comboBoxItem.Content.ToString();  }
+                
                 NotifyPropertyChanged("Font");
             }
         }
 
         private string _color = "Green";
-        public string Color
+        public object Color
         {
             get { return _color; }
-            set { _color = value; NotifyPropertyChanged("Color"); }
+            set
+            {
+                var comboBoxItem = (value as ComboBoxItem);
+                if (comboBoxItem == null) { _color = (value as String); }
+                else { _color = comboBoxItem.Content.ToString(); }
+                NotifyPropertyChanged("Color");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
