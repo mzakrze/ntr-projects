@@ -34,7 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -56,6 +66,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Migrations\201712131915021_InitialCreate.cs" />
+    <Compile Include="Migrations\201712131915021_InitialCreate.Designer.cs">
+      <DependentUpon>201712131915021_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712140006003_AddGuidGeneratedInDb.cs" />
+    <Compile Include="Migrations\201712140006003_AddGuidGeneratedInDb.Designer.cs">
+      <DependentUpon>201712140006003_AddGuidGeneratedInDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712140013500_DropAddAppointmentGuid.cs" />
+    <Compile Include="Migrations\201712140013500_DropAddAppointmentGuid.Designer.cs">
+      <DependentUpon>201712140013500_DropAddAppointmentGuid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModel\SetPreferencesWindowViewModel.cs" />
     <Compile Include="View\SetPreferencesWindow.xaml.cs">
       <DependentUpon>SetPreferencesWindow.xaml</DependentUpon>
@@ -102,10 +125,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201712131915021_InitialCreate.resx">
+      <DependentUpon>201712131915021_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712140006003_AddGuidGeneratedInDb.resx">
+      <DependentUpon>201712140006003_AddGuidGeneratedInDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712140013500_DropAddAppointmentGuid.resx">
+      <DependentUpon>201712140013500_DropAddAppointmentGuid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,7 +150,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="log4net.xml" />
+    <Content Include="log4net.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

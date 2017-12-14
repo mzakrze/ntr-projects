@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -12,13 +13,18 @@ using WpfApp2.View;
 
 namespace WpfApp2.ViewModel
 {
-    public class MainWindowViewModel: INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
+
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private EventView _eventView;
         private int _windowWidth = 600;
-        public int WindowWidth {
-            get { return _windowWidth;  }
-            set { _windowWidth = value; FontSize = value / 50; NotifyPropertyChanged("WindowWidth");  }
+        public int WindowWidth
+        {
+            get { return _windowWidth; }
+            set { _windowWidth = value; FontSize = value / 50; NotifyPropertyChanged("WindowWidth"); }
         }
 
         private int _fontSize = 12;
@@ -76,11 +82,12 @@ namespace WpfApp2.ViewModel
 
         private void PreferencesChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "Font")
+            if (e.PropertyName == "Font")
             {
                 string font = ((sender as SetPreferencesWindowViewModel).Font as String);
                 this.FontFamily = font;
-            } else if(e.PropertyName == "Color")
+            }
+            else if (e.PropertyName == "Color")
             {
                 string color = ((sender as SetPreferencesWindowViewModel).Color as String);
                 this.ThemeColor = color;
@@ -101,24 +108,22 @@ namespace WpfApp2.ViewModel
 
         private void EditEventCommandExecute(object parameter)
         {
-            Event ev = parameter as Event;
+            Guid appointmentGuid = //new Guid(parameter as string);
+                (Guid) parameter;
             EventView eventView = new EventView();
             EventViewModel eventViewModel = eventView.eventViewModel;
-            eventViewModel.Id = ev.Id.ToString();
-            eventViewModel.Name = ev.Name;
-            eventViewModel.BeginTime = ev.BeginTime.ToString("HH:mm");
-            eventViewModel.EndTime = ev.EndTime.ToString("HH:mm");
-            eventViewModel.Date = ev.Date.ToString(@"dd\/MM\/yyyy");
+            eventViewModel.AppointmentId = appointmentGuid;
             eventView.Show();
         }
 
         private void AddEventCommandExecute(object parameter)
         {
-            if(_eventView == null || !_eventView.IsActive)
+            log.Info("In AddEventCommand ...");
+            if (_eventView == null || !_eventView.IsActive)
             {
                 _eventView = new EventView();
                 EventViewModel eventViewModel = _eventView.eventViewModel;
-                DateTime dateTime = (DateTime) parameter;
+                DateTime dateTime = (DateTime)parameter;
                 eventViewModel.Date = dateTime.ToString(@"dd\/MM\/yyyy");
                 _eventView.ShowDialog();
             }
@@ -166,62 +171,65 @@ namespace WpfApp2.ViewModel
 
             LabelWrappers = new ObservableCollection<LabelWrapper>();
 
-            Calendar.Instance.Events.CollectionChanged += new NotifyCollectionChangedEventHandler(MyHandleEventsChangedFunction);
-
             this.FillCallendar();
-
         }
 
         private void FillCallendarDaysCards()
         {
-            foreach(DayCard card in DaysCards)
+            foreach (DayCard card in DaysCards)
             {
-                card.Events.Clear();
+                card.Appointments.Clear();
             }
-            AddEventsToCalendar(Calendar.Instance.Events.ToList());
+            AddEventsToCalendar();
         }
 
-        private void AddEventsToCalendar(List<Event> events)
+        private void AddEventsToCalendar()
         {
-            foreach (Event ev in events)
+            log.Debug("In AddEventsToCalendar...");
+            int counter = 0;
+            try
             {
-                if (ev.Date.DayOfYear - FirstDayInCalendar.DayOfYear < 0 || ev.Date.DayOfYear - FirstDayInCalendar.DayOfYear > 28)
+                using (var ctx = new StorageContext())
                 {
-                    return;
-                }
-                int column = (int)ev.Date.DayOfWeek;
-                if (column == 0) column = 7;
-                int row = (ev.Date.DayOfYear - FirstDayInCalendar.DayOfYear) / 7 + 1;
-                this.DaysCards.First((e) => e.Row == row && column == e.Column).Events.Add(ev);
-            }
-        }
-
-        private void RemoveEventsFromCalendar(IEnumerable<Event> events)
-        {
-            foreach (Event ev in events)
-            {
-                foreach (DayCard d in DaysCards)
-                {
-                    int index = d.Events.IndexOf(ev);
-                    if(index != -1)
+                    foreach (Appointment a in ctx.Appointments)
                     {
-                        d.Events.RemoveAt(index);
+                        if (a.AppointmentDate.DayOfYear - FirstDayInCalendar.DayOfYear < 0 || a.AppointmentDate.DayOfYear - FirstDayInCalendar.DayOfYear > 28)
+                        {
+                            return;
+                        }
+                        counter++;
+                        int column = (int)a.AppointmentDate.DayOfWeek;
+                        if (column == 0) column = 7;
+                        int row = (a.AppointmentDate.DayOfYear - FirstDayInCalendar.DayOfYear) / 7 + 1;
+                        this.DaysCards.First((e) => e.Row == row && column == e.Column).Appointments.Add(a);
+                        log.Info("fetched appointment from db: " + a.AppointmentId + ", " + a.AppointmentDate);
                     }
                 }
+                log.Debug("added to calendar " + counter + " events");
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception in AddEventsToCalender: " + ex.GetType().FullName);
+            }
+        }
+
+        private void RemoveEventsFromCalendar()
+        {
+            foreach (DayCard d in DaysCards)
+            {
+                d.Appointments.Clear();
             }
         }
 
         private void MyHandleEventsChangedFunction(object sender, NotifyCollectionChangedEventArgs s)
         {
-            List<Event> a = s.NewItems as List<Event>;
-
             if (s.NewItems != null)
             {
-                this.AddEventsToCalendar(s.NewItems.Cast<Event>().ToList());
+                this.AddEventsToCalendar();
             }
             if (s.OldItems != null)
             {
-                this.RemoveEventsFromCalendar(s.OldItems.Cast<Event>().ToList());
+                this.RemoveEventsFromCalendar();
             }
         }
     }
@@ -232,7 +240,7 @@ namespace WpfApp2.ViewModel
         public DataTemplate CalendarCardTemplate { get; set; }
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if(item as DayCard != null)
+            if (item as DayCard != null)
             {
                 return CalendarCardTemplate;
             }
@@ -244,12 +252,33 @@ namespace WpfApp2.ViewModel
     {
         public object Convert(object[] values, Type type, object o, System.Globalization.CultureInfo cultureInfo)
         {
-            int id = (int)values[0];
+            if(1== 1)
+            {
+                return "change plz";
+            }
+            String a = values[0] as string;
+            String b = values[1] as string;
+            String c = values[2] as string;
+            String d = values[3] as string;
+            String e = values[4] as string;
+
+            if (1 == 1)
+                return null;
+
+            Guid guid = new Guid(values[0] as string);
             string name = values[1] as string;
             DateTime date = (DateTime)values[2];
             DateTime beginTime = (DateTime)values[3];
             DateTime endTime = (DateTime)values[4];
-            return new Event(id, name, date, beginTime, endTime);
+            /*
+            Guid guid = Guid.NewGuid();
+            string name = "testname";
+            DateTime date = DateTime.Now;
+            DateTime beginTime = DateTime.Now.AddHours(3);
+            DateTime endTime = DateTime.Now.AddHours(5);
+            */
+            //return new Appointment() { AppointmentId = guid, Title = name, AppointmentDate = date, StartTime = beginTime, EndTime = endTime };
+            return "xd";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
@@ -278,7 +307,7 @@ namespace WpfApp2.ViewModel
         public string Name { get; set; }
         public int Row { get; set; } /*TODO - zamienić na week, dayEnum, albo w widoku w code behind jakoś rzutować */
         public int Column { get; set; }
-        public ObservableCollection<Event> Events { get; set; } = new ObservableCollection<Event>();
+        public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
 
         public DayCard(DateTime dateTime, string name, int row, int column)
         {
@@ -286,13 +315,27 @@ namespace WpfApp2.ViewModel
             this.Name = name;
             this.Row = row;
             this.Column = column;
-            this.Events.Clear();
-            Calendar.Instance.Events.Where(e => e.Date.Equals(dateTime)).ToList().ForEach(e => this.Events.Add(e));
+            this.Appointments.Clear();
+            //Calendar.Instance.Events.Where(e => e.Date.Equals(dateTime)).ToList().ForEach(e => this.Events.Add(e));
         }
 
         public override string ToString()
         {
             return Date.ToString();
+        }
+    }
+
+    public class DontChangeGuidConverted : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            //return value.ToString();
+            throw new NotImplementedException();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 

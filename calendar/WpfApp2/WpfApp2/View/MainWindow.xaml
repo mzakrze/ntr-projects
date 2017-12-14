@@ -13,6 +13,7 @@
     </Window.DataContext>
     <Window.Resources>
         <vm:IsTodayConverter x:Key="IsTodayConverter" />
+        <vm:DontChangeGuidConverted x:Key="DontChangeGuidConverted" />
         <Style TargetType="Label" x:Key="myStaticLabel">
             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -143,19 +144,11 @@
             </Label>
         </DataTemplate>
         <DataTemplate x:Key="mySingleEvent">
-            <Label Content="{Binding Name}">
+            <Label Content="{Binding Title}">
                 <Label.InputBindings>
                     <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditEventCommand,
-                        RelativeSource={RelativeSource AncestorLevel=2, AncestorType=ItemsControl}}" >
-                        <MouseBinding.CommandParameter>
-                            <MultiBinding Converter="{StaticResource ViewEventIdConverter}">
-                                <Binding Path="Id"/>
-                                <Binding Path="Name" />
-                                <Binding Path="Date" />
-                                <Binding Path="BeginTime" />
-                                <Binding Path="EndTime" />
-                            </MultiBinding>
-                        </MouseBinding.CommandParameter>
+                        RelativeSource={RelativeSource AncestorLevel=2, AncestorType=ItemsControl}}" CommandParameter="{Binding AppointmentId}">
+                        
                     </MouseBinding>
                 </Label.InputBindings>
             </Label>
@@ -179,7 +172,7 @@
                     DockPanel.Dock="Bottom"
                       VerticalAlignment="Stretch"
                     VerticalContentAlignment="Stretch"
-                      ItemsSource="{Binding Events}"
+                      ItemsSource="{Binding Appointments}"
                       ItemTemplate="{Binding Source={StaticResource mySingleEvent}}"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       ScrollViewer.CanContentScroll="True">

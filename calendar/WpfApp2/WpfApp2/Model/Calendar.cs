@@ -1,86 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading;
 
 namespace WpfApp2.Model
 {
-    public class Calendar
+    public class Attendance
     {
-        private static Calendar instance;
-
-        private Calendar() { }
-
-        public static Calendar Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Calendar();
-                }
-                return instance;
-            }
-        }
-
-        public ObservableCollection<Event> Events = new ObservableCollection<Event>();
-        
-        private int eventNextId = 0;
-        
-        public void UpsertEvent(Event Ev)
-        {
-            if(Ev.Id == null)
-            {
-                Ev.Id = Interlocked.Increment(ref eventNextId);
-                Events.Add(Ev);
-            } else
-            {
-                DeleteEventById(Ev.Id);
-                Events.Add(Ev);
-            }
-        }
-
-        public void DeleteEventById(int? Id)
-        {
-            Events.Remove(new Event(Id));
-        }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid AttendanceId { get; set; }
+        public virtual Appointment Appointment { get; set; }
+        public virtual Person Person { get; set; }
+        public bool Accepted { get; set; }
     }
 
-
-
-    public class Event
+    public class Person
     {
-        public int? Id { get; set; }
-        public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime BeginTime { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid PersonId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserID { get; set; }
+        public virtual List<Attendance> Attendances { get; set; }
+    }
+
+    public class Appointment
+    {
+        public Guid AppointmentId { get; set; }
+        public string Title { get; set; }
+        public DateTime AppointmentDate { get; set; }
+        public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public virtual List<Attendance> Attendances { get; set; }
+    }
 
-        public Event(int? id)
-        {
-            Id = id;
-        }
+    public class StorageContext : DbContext
+    {
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+    }
 
-        public Event(int? id, string name, DateTime date, DateTime beginTime, DateTime endTime)
+    public class Storage
+    {
+        public List<Person> getPersons()
         {
-            this.Id = id;
-            this.Name = name;
-            this.Date = date;
-            this.BeginTime = beginTime;
-            this.EndTime = endTime;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if(obj as Event == null)
-            {
-                return false;
-            }
-            return this.Id == (obj as Event).Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Id ?? -1;
+            using (var db = new StorageContext())
+                return db.Persons.ToList();
         }
     }
 }

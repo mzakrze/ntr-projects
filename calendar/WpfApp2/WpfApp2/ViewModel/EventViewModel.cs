@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.Entity.Infrastructure;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +16,27 @@ namespace WpfApp2.ViewModel
         private string _beginTime;
         private string _endTime;
 
-        public string Id { get; set; }
+        private Appointment currentAppointment;
+        private Guid _appointmentId;
+        public Guid AppointmentId
+        {
+            get { return _appointmentId; }
+            set
+            {
+                _appointmentId = value;
+                using(var db = new StorageContext())
+                {
+                    Appointment a = db.Appointments.Find(_appointmentId);
+                    currentAppointment = a;
+                    Name = a.Title;
+                    Date = a.AppointmentDate.ToString(@"dd\/MM\/yyyy");
+                    BeginTime = a.StartTime.ToString("HH:mm");
+                    EndTime = a.EndTime.ToString("HH:mm");
+                }
+                PropertyChanged(this, new PropertyChangedEventArgs("AppointmentId"));
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -45,10 +67,14 @@ namespace WpfApp2.ViewModel
 
         public string Error { get; set; }
 
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string this[string columnName]
         {
             get
             {
+                log.Debug("Validating form ...");
                 Error = "";
                 switch (columnName)
                 {
@@ -144,15 +170,87 @@ namespace WpfApp2.ViewModel
 
         private bool CanSaveCommandExecute()
         {
-           return DateValid && BeginTimeValid && EndTimeValid && NameValid;
+            Boolean can = DateValid && BeginTimeValid && EndTimeValid && NameValid;
+            if (can)
+            {
+                log.Debug("SaveCommandExecute command is cant be executed");
+            } else
+            {
+                log.Debug("SaveCommandExecute command can be executed");
+            }
+            
+           return can;
         }
 
         private void SaveCommandExecute(object parameter)
         {
-            Event Ev = GetLastEditedEventForm();
-            Calendar.Instance.UpsertEvent(Ev);
-            Window win = parameter as Window;
-            win.Close();
+            log.Debug("In SaveCommand...");
+            try
+            {
+                Boolean closeWin = true;
+                Appointment Ev = GetLastEditedEventForm();
+                Boolean add = false;
+                if (Ev.AppointmentId == null)
+                {
+                    Ev.AppointmentId = Guid.NewGuid();
+                    add = true;
+                }
+                using (var ctx = new StorageContext())
+                {
+                    if (add)
+                    {
+                        ctx.Appointments.Add(Ev);
+                        ctx.SaveChanges();
+                    } else
+                    {
+                        ctx.Database.BeginTransaction();
+
+                        Appointment original = ctx.Appointments.Find(currentAppointment.AppointmentId);
+                        original.AppointmentDate = DateTime.Now;
+                        Boolean eq = AreEauql(original, currentAppointment);
+                        if (eq)
+                        {
+                            original.Title = Ev.Title;
+                            original.EndTime = Ev.EndTime;
+                            original.StartTime = Ev.StartTime;
+                            ctx.SaveChanges();
+                            ctx.Database.CurrentTransaction.Commit();
+                        } else
+                        {
+                            log.Info("Appointment Has changed");
+                            MessageBoxResult result = MessageBox.Show("Ups, someone else edited this before you. I'll fill present data to form", "Concurrency", MessageBoxButton.OK, MessageBoxImage.Question);
+                            Name = original.Title;
+                            BeginTime = original.StartTime.ToString("HH:MM");
+                            EndTime = original.EndTime.ToString("HH:MM");
+                            closeWin = false;
+                        }
+                    }
+                    
+                }
+                if (closeWin)
+                {
+                    Window win = parameter as Window;
+                    win.Close();
+                }
+                log.Debug("SaveCommand succeded");
+            } catch(Exception e)
+            {
+                log.Error("SaveCommand Failed because:" + e.GetType().FullName);
+            }
+            
+        }
+
+        Boolean AreEauql(Appointment a1, Appointment a2)
+        {
+            if (a1.AppointmentDate.CompareTo(a2.AppointmentDate) != 0)
+                return false;
+            if (a1.EndTime.CompareTo(a2.EndTime) != 0)
+                return false;
+            if (a1.StartTime.CompareTo(a2.StartTime) != 0)
+                return false;
+            if (a1.Title.Equals(a2.Title) == false)
+                return false;
+            return true;
         }
 
         private void CancelCommandExecute(object parameter)
@@ -163,24 +261,50 @@ namespace WpfApp2.ViewModel
 
         private bool CanDeleteCommandExecute()
         {
-            return Id != null;
+            return Guid.Empty.Equals(AppointmentId) == false;
         }
 
         private void DeleteCommandExecute(object parameter)
         {
-            Calendar.Instance.DeleteEventById(Int32.Parse(Id));
-            Window win = parameter as Window;
-            win.Close();
+            log.Debug("In DeleteCommand...");
+            try
+            {
+                using (var db = new StorageContext())
+                {
+                    Guid guid = AppointmentId;
+                    var original = db.Appointments.Find(guid);
+                    if (original != null /* && wersja ta sama */)
+                    {
+                        db.Appointments.Remove(original);
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception E)
+                        {
+                            log.Error("Cant delete Appointment : " + E);
+                            throw E;
+                        }
+                    }
+                    else
+                    {
+                        MessageBoxResult result = MessageBox.Show("Ups, someone else deleted this before you", "Concurrency", MessageBoxButton.OK, MessageBoxImage.Question);
+                    }
+                }
+                Window win = parameter as Window;
+                win.Close();
+                log.Debug("DeleteCommand succeded");
+            } catch(Exception e)
+            {
+                log.Error("DeleteCommand failed because: " + e.GetType().FullName);
+            }
         }
 
-
-        private Event GetLastEditedEventForm()
+        private Appointment GetLastEditedEventForm()
         {
-            int? id = null;
-            if (Id != null)
-            {
-                id = Int32.Parse(Id);
-            }
+
+            Guid guid = AppointmentId;
+            
             string[] str = _date.Split('/');
             string[] str2 = _beginTime.Split(':');
             string[] str3 = _endTime.Split(':');
@@ -197,7 +321,7 @@ namespace WpfApp2.ViewModel
             DateTime date = new DateTime(dateYear, dateMth, dateDay);
             DateTime beginTime = date.AddHours(beginTimeH).AddMinutes(beginTimeM);
             DateTime endTime = date.AddHours(endTimeH).AddMinutes(endTimeM);
-            return new Event(id, Name, date, beginTime, endTime);
+            return new Appointment() { AppointmentId = guid, AppointmentDate = date, Title = Name, StartTime = beginTime, EndTime = endTime };
         }
     }
 }
