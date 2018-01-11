@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Globalization;
 
 namespace calendar_backend.Controllers
 {
@@ -22,8 +23,9 @@ namespace calendar_backend.Controllers
         }
 
         // POST api/appointments
-        public Appointment Post([FromBody]Appointment postedAppointment)
+        public Appointment Post([FromBody]AppointmentWrapper postedAppointment)
         {
+            DateTime d1 = DateTime.ParseExact(postedAppointment.AppointmentDate, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             Appointment appointment;
             if (ModelState.IsValid)
             {
@@ -33,7 +35,7 @@ namespace calendar_backend.Controllers
                     {
                         Title = postedAppointment.Title,
                         Description = postedAppointment.Description,
-                        AppointmentDate = postedAppointment.AppointmentDate,
+                        AppointmentDate = d1, //DateTime.Now,  //postedAppointment.AppointmentDate,
                         StartTime = postedAppointment.StartTime,
                         EndTime = postedAppointment.EndTime
                     };
@@ -50,7 +52,7 @@ namespace calendar_backend.Controllers
         }
 
         // PUT api/appointments/5
-        public Appointment Put(string id, [FromBody]Appointment postedAppointment)
+        public Appointment Put(string id, [FromBody]AppointmentWrapper postedAppointment)
         {
             Appointment appointment;
             if (ModelState.IsValid)
@@ -64,7 +66,8 @@ namespace calendar_backend.Controllers
                     }
                     appointment.Title = postedAppointment.Title;
                     appointment.Description = postedAppointment.Description;
-                    appointment.AppointmentDate = postedAppointment.AppointmentDate;
+                    //appointment.AppointmentDate = DateTime.ParseExact(postedAppointment.AppointmentDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    appointment.AppointmentDate = DateTime.Parse(postedAppointment.AppointmentDate, CultureInfo.InvariantCulture);
                     appointment.StartTime = postedAppointment.StartTime;
                     appointment.EndTime = postedAppointment.EndTime;
                     db.SaveChanges();
