@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Globalization;
 
@@ -35,7 +34,7 @@ namespace calendar_backend.Controllers
                     {
                         Title = postedAppointment.Title,
                         Description = postedAppointment.Description,
-                        AppointmentDate = d1, //DateTime.Now,  //postedAppointment.AppointmentDate,
+                        AppointmentDate = d1,
                         StartTime = postedAppointment.StartTime,
                         EndTime = postedAppointment.EndTime
                     };
@@ -52,7 +51,7 @@ namespace calendar_backend.Controllers
         }
 
         // PUT api/appointments/5
-        public Appointment Put(string id, [FromBody]AppointmentWrapper postedAppointment)
+        public object Put(string id, [FromBody]AppointmentWrapper postedAppointment)
         {
             Appointment appointment;
             if (ModelState.IsValid)
@@ -62,17 +61,17 @@ namespace calendar_backend.Controllers
                     appointment = db.Appointment.Where(a => a.AppointmentID == new Guid(id)).First();
                     if (!appointment.timestamp.SequenceEqual(postedAppointment.timestamp))
                     {
-                        throw new HttpResponseException(HttpStatusCode.Conflict);
+                        Appointment concurrentChange = db.Appointment.Where(a => a.AppointmentID == new Guid(id)).First();
+                        return Json(JsonResponseFactory.ErrorResponse(concurrentChange));
                     }
                     appointment.Title = postedAppointment.Title;
                     appointment.Description = postedAppointment.Description;
-                    //appointment.AppointmentDate = DateTime.ParseExact(postedAppointment.AppointmentDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
                     appointment.AppointmentDate = DateTime.Parse(postedAppointment.AppointmentDate, CultureInfo.InvariantCulture);
                     appointment.StartTime = postedAppointment.StartTime;
                     appointment.EndTime = postedAppointment.EndTime;
                     db.SaveChanges();
                 }
-                return appointment;
+                return Json(JsonResponseFactory.SuccessResponse(appointment));
             }
             else
             {
@@ -93,6 +92,25 @@ namespace calendar_backend.Controllers
                 db.Appointment.Remove(appointment);
                 db.SaveChanges();
             }
+        }
+
+        public class JsonResponseFactory
+        {
+            public static object ErrorResponse(object referenceObject)
+            {
+                return new { Success = false, Object = referenceObject };
+            }
+
+            public static object SuccessResponse()
+            {
+                return new { Success = true };
+            }
+
+            public static object SuccessResponse(object referenceObject)
+            {
+                return new { Success = true, Object = referenceObject };
+            }
+
         }
     }
 }

@@ -59,7 +59,6 @@ namespace calendar_backend.Services
             {
                 appointment = db.Appointment
                         .Where(a => a.AppointmentDate == date)
-                        //.Where(a => a.AppointmentDate.Date.Equals(date.Date))
                         .OrderBy(a => a.StartTime)
                         .ToArray();
             }
