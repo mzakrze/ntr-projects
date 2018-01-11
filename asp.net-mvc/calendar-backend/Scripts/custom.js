@@ -24,6 +24,7 @@ $('.appointment').dblclick(function (event) {
         $('.btn-danger').css('display', 'inline');
         $('#title').val(data.Title);
         $('#description').val(data.Description);
+        $('#timestamp').val(data.timestamp);
         $('.start-time input').val(data.StartTime.substring(0, 5));
         $('.end-time input').val(data.EndTime.substring(0, 5));
         $('.errors').text('');
@@ -38,6 +39,12 @@ $('#myModal .btn-primary').click(function () {
     appointment.Description = $('#description').val();
     appointment.StartTime = $('.start-time input').val();
     appointment.EndTime = $('.end-time input').val();
+    appointment.timestamp = $('#timestamp').val();
+
+    if (appointment.StartTime >= appointment.EndTime) {
+        alert('form error');
+        return;
+    }
 
     if (appointment.AppointmentID) {
         $.ajax({
@@ -57,6 +64,7 @@ $('#myModal .btn-primary').click(function () {
                         $('#description').val(data.Object.Description);
                         $('.start-time input').val(data.Object.StartTime.substring(0, 5));
                         $('.end-time input').val(data.Object.EndTime.substring(0, 5));
+                        $('#timestamp').val(data.Object.timestamp);
                         alert("Sorry, someone else edited that before you. I filled the data for you");
                     } else {
                         alert("Sorry, someone else has already deleted it");

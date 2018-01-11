@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("calendar_backend")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("calendar_backend")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 // Ustawienie dla atrybutu ComVisible wartości false powoduje, że typy w tym zestawie stają się niewidoczne
 // dla składników COM. Jeśli musisz uzyskiwać dostęp do typu w tym zestawie

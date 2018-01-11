@@ -8,6 +8,9 @@ namespace calendar_backend
 {
     public static class WebApiConfig
     {
+        private static readonly log4net.ILog log =
+                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Register(HttpConfiguration config)
         {
             // Konfiguracja i usługi składnika Web API
@@ -20,6 +23,9 @@ namespace calendar_backend
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+
+            
         }
     }
 }

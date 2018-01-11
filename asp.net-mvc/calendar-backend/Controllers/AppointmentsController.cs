@@ -11,8 +11,8 @@ namespace calendar_backend.Controllers
     public class AppointmentsController : ApiController
     {
 
-    //    private static readonly log4net.ILog log =
-    //log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log =
+        //        log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //private static readonly log4net.ILog log =
         //    log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,7 +31,7 @@ namespace calendar_backend.Controllers
         // POST api/appointments
         public Appointment Post([FromBody]AppointmentWrapper postedAppointment)
         {
-            DateTime d1 = DateTime.ParseExact(postedAppointment.AppointmentDate, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime d1 = DateTime.ParseExact(postedAppointment.AppointmentDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             Appointment appointment;
             if (ModelState.IsValid)
             {
@@ -80,6 +80,7 @@ namespace calendar_backend.Controllers
                     appointment.AppointmentDate = DateTime.Parse(postedAppointment.AppointmentDate, CultureInfo.InvariantCulture);
                     appointment.StartTime = postedAppointment.StartTime;
                     appointment.EndTime = postedAppointment.EndTime;
+                    appointment.timestamp = postedAppointment.timestamp;
                     db.SaveChanges();
                 }
                 return Json(JsonResponseFactory.SuccessResponse(appointment));
