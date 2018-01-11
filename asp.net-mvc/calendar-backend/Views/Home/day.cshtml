@@ -1,0 +1,15 @@
+﻿@model calendar_backend.Models.Day
+
+<div class="day">
+    <input class="value-date" type="hidden" value="@Model.Date.ToString()" />
+    <div class="day-label">
+        <p>@Model.Date.Substring(0, 10)</p>
+    </div>
+    @foreach (var appointment in Model.Appointments)
+    {
+        <div class="appointment">
+            <input class="value-appointmentid" type="hidden" value="@appointment.AppointmentID" />
+            <p>@appointment.StartTime.ToString(@"hh\:mm") - @appointment.EndTime.ToString(@"hh\:mm") @appointment.Title</p>
+        </div>
+    }
+</div>

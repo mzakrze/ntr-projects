@@ -1,0 +1,11 @@
+﻿@model IEnumerable<calendar_backend.Models.Week>
+<div class="calendar">
+    @Html.Partial("header", "prev")
+    @foreach (var week in Model)
+    {
+        @Html.Partial("week", week)
+    }
+    @Html.Partial("header", "next")
+</div>
+
+@Html.Partial("modal")
