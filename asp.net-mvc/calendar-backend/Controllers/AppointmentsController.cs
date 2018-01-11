@@ -58,7 +58,11 @@ namespace calendar_backend.Controllers
             {
                 using (var db = new Storage())
                 {
-                    appointment = db.Appointment.Where(a => a.AppointmentID == new Guid(id)).First();
+                    appointment = db.Appointment.Where(a => a.AppointmentID == new Guid(id)).FirstOrDefault();
+                    if(appointment == null)
+                    {
+                        return Json(JsonResponseFactory.ErrorResponse(null));
+                    }
                     if (!appointment.timestamp.SequenceEqual(postedAppointment.timestamp))
                     {
                         Appointment concurrentChange = db.Appointment.Where(a => a.AppointmentID == new Guid(id)).First();

@@ -49,16 +49,20 @@ $('#myModal .btn-primary').click(function () {
             success: function (data) {
                 console.log('in success function, data:' + data);
                 if (data.Success) {
-                    console.log('success');
                     $('#myModal').modal('hide');
                     location.reload();
                 } else {
-                    console.log('error');
-                    $('#title').val(data.Object.Title);
-                    $('#description').val(data.Object.Description);
-                    $('.start-time input').val(data.Object.StartTime.substring(0, 5));
-                    $('.end-time input').val(data.Object.EndTime.substring(0, 5));
-                    alert("Sorry, someone else edited that before you. I filled the data for you"); // TODO jeśli ktos usunął
+                    if (data.Object) {
+                        $('#title').val(data.Object.Title);
+                        $('#description').val(data.Object.Description);
+                        $('.start-time input').val(data.Object.StartTime.substring(0, 5));
+                        $('.end-time input').val(data.Object.EndTime.substring(0, 5));
+                        alert("Sorry, someone else edited that before you. I filled the data for you");
+                    } else {
+                        alert("Sorry, someone else has already deleted it");
+                        $('#myModal').modal('hide');
+                        location.reload();
+                    }
                 }
             } 
         });
