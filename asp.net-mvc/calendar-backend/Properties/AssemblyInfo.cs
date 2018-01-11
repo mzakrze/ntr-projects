@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("calendar_backend")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
+//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("calendar_backend")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]

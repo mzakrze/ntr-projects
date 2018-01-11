@@ -10,6 +10,13 @@ namespace calendar_backend.Controllers
 {
     public class AppointmentsController : ApiController
     {
+
+    //    private static readonly log4net.ILog log =
+    //log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        //private static readonly log4net.ILog log =
+        //    log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         // GET api/appointments/5
         public Appointment Get(string id)
         {
