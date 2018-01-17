@@ -1,0 +1,14 @@
+﻿@model calendar_backend.Models.Week
+
+<div class="week">
+    <div class="tag">
+        <label>W @Model.No @Model.Year</label>
+    </div>
+    @foreach (var day in Model.Days)
+    {
+        @Html.Partial("day", day)        
+    }
+    <div class="tag">
+        <label>W @Model.No @Model.Year</label>
+    </div>
+</div>

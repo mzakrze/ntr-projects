@@ -1,0 +1,25 @@
+<div class="calendar">
+    <div class="header">
+        <div class="navigate" ng-click="$ctrl.go(-7)">
+            <label>prev</label>
+        </div>
+        <div class="tag" ng-repeat="weekday in $ctrl.weekDays">
+                <label>{{ weekday }}</label>
+            </div>
+        <div class="navigate" ng-click="$ctrl.go(-7)">
+            <label>prev</label>
+        </div>
+    </div>
+    <cal-week week="week" ng-repeat="week in $ctrl.weeks"></cal-week>
+    <div class="header">
+        <div class="navigate" ng-click="$ctrl.go(7)">
+            <label>next</label>
+        </div>
+        <div class="tag" ng-repeat="weekday in $ctrl.weekDays">
+            <label>{{ weekday }}</label>
+        </div>
+        <div class="navigate" ng-click="$ctrl.go(7)">
+            <label>next</label>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+.calendar {
+    color: #00008f;
+    min-width: 500px;
+    margin-left: 5%;
+}
+
+.navigate, .navigate > label {
+    background-color: #cce6e6;
+    cursor: pointer;
+}
+
+.tag {
+    background-color: #cccce9;
+}
+
+.navigate, .tag {
+    width: 10%;
+    height: 100px;
+    display: inline-block;
+    text-align: center;
+    margin: 1px;
+}
+
+.navigate > label, .tag > label {
+    margin: 10px;
+    display: inline-block;
+}
+
+.header > div {
+    height: 40px;
+}
+
+label {
+    font-weight: 100;
+}
+
+@media screen and (max-width: 900px) {
+    label {
+        font-size: 10px;
+    }
+}

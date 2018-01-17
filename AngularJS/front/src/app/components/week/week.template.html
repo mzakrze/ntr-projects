@@ -1,0 +1,9 @@
+<div class="week {{$ctrl.currentWeek ? 'current-week' : ''}}">
+    <div class="tag">
+        <label>W {{ $ctrl.week.No }} {{ $ctrl.week.Year }}</label>
+    </div>
+    <cal-day day="day" ng-repeat="day in $ctrl.week.Days"></cal-day>
+    <div class="tag">
+        <label>W {{ $ctrl.week.No }} {{ $ctrl.week.Year }}</label>
+    </div>
+</div>

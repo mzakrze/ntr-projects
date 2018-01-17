@@ -1,0 +1,58 @@
+
+.day {
+    vertical-align: top;
+    display: inline-block;
+    width: 10%;
+    height: 100px;
+    
+    margin: 1px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+
+    overflow: hidden;
+
+}
+
+.day:hover {
+    overflow-y: visible;
+}
+
+.day:hover {
+    background-color: #fafafa;
+}
+
+.day-label {
+    border: 1px solid #ccc;
+    text-align: left;
+    margin: 3px;
+    font-size: 10px;
+}
+
+.day-label > p {
+    margin: 3px;
+}
+
+
+.appointment {
+    border: 1px solid green;
+    text-align: left;
+    margin: 3px;
+    font-size: 10px;
+}
+
+.appointment:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.appointment > p {
+    margin: 2px;
+    color: green;
+}
+
+
+@media screen and (max-width: 800px) {
+    .day-label, .appointment {
+        font-size: 9px;
+        margin: 0px;
+    }
+}

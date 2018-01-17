@@ -1,0 +1,60 @@
+﻿
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="appointment-modal">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" value="" id="title" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" value="" id="description" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Appointment start time</label>
+                            <div class="input-group clockpicker start-time" data-autoclose="true">
+                                <input type="text" class="form-control" value="09:30">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Appointment end time</label>
+                            <div class="input-group clockpicker end-time" data-autoclose="true">
+                                <input type="text" class="form-control" value="09:30">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" value="" id="timestamp" />
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="error"></div>
+                    <br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

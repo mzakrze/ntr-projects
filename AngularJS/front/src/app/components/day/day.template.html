@@ -1,0 +1,12 @@
+<div class="day" ng-dblclick="$ctrl.addAppointment()">
+    <div class="day-label">
+        <p>{{ $ctrl.day.Date | amParse:'DD.MM.YYYY' | amDateFormat:'MMMM DD' }}</p>
+    </div>
+    <div 
+        class="appointment" 
+        ng-repeat="appointment in $ctrl.day.Appointments"
+        ng-dblclick="$ctrl.editAppointment(appointment); $event.stopPropagation()"
+    >
+        <p>{{ appointment.StartTime | limitTo: 5 }} - {{ appointment.EndTime | limitTo: 5 }} {{ appointment.Title }}</p>
+    </div>
+</div>

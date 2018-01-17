@@ -1,0 +1,63 @@
+<div class="appointment-modal">
+    <h1>{{$ctrl.mode}} appointment</h1>
+    <br/><br/>
+    <form name="$ctrl.form" novalidate ng-submit="$ctrl.save()">
+        <div class="form-group">
+            <label>Title</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                name="Title"
+                required 
+                ng-maxlength="16"
+                ng-model="$ctrl.appointment.Title" />
+            <div class="error" ng-messages="$ctrl.form.Title.$error" ng-if="$ctrl.form.Title.$touched">
+                <div ng-message="required">This field is required</div>
+                <div ng-message="maxlength">This field can be at most 16 characters long.</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                name="Description"
+                required 
+                ng-maxlength="16"
+                ng-model="$ctrl.appointment.Description" />
+            <div class="error" ng-messages="$ctrl.form.Description.$error" ng-if="$ctrl.form.Description.$touched">
+                <div ng-message="required">This field is required</div>
+                <div ng-message="maxlength">This field can be at most 60 characters long.</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label>Appointment start time</label>
+                <div uib-timepicker ng-model="$ctrl.appointment.StartTime" show-meridian="false"></div>
+            </div>
+            <div class="col-md-6 form-group">
+                <label>Appointment end time</label>
+                <div uib-timepicker ng-model="$ctrl.appointment.EndTime" show-meridian="false"></div>
+            </div>
+        </div>
+
+        <div class="error" ng-repeat="error in $ctrl.errors">{{error}}</div>
+        <br/><br/>
+
+        <div class="row">
+            <div class="col-xs-3">
+                    <button 
+                        class="btn btn-danger" 
+                        ng-click="$ctrl.remove()"
+                        ng-if="$ctrl.appointment.AppointmentID"
+                    >
+                        Delete
+                    </button>
+            </div>
+            <div class="col-xs-9 text-right">
+                <button class="btn btn-default" ng-click="$ctrl.cancel()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
